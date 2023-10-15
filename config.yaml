@@ -1,0 +1,33 @@
+---
+  # path to the binary
+  bin_path      : "./test/mipsel/main"
+
+  # options: ARM      M68K     MIPS     RISCV    SPARC    X86
+  #          ARM64    MAX      PPC      S390X    TRICORE
+  architecture  : MIPS
+
+  # options: 32, 64
+  bit           : 32
+
+  # options: BIG, LITTLE
+  endian        : LITTLE
+
+  # where the binary is loaded into memory
+  text_address  : 0x10000
+
+  # address to being the emulation at
+  start_address : 0x000106f0
+  end_address   : 0x00010734
+
+  # ------ OPTIONAL ARGUMENTS BELOW ---- COMMENT OUT EACH ONE TO USE DEFAULTS --------
+
+  # memory address must be page aligned -> 0x1000 
+  # Numerical low value of the bss segment
+  # bss_low       : 0x0
+  # bss_high      : 0x0
+
+  # stack_low     : 0x0
+  # stack_high    : 0x0
+
+
+

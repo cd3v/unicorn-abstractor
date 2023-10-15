@@ -1,0 +1,14 @@
+---
+  ra        : UC_MIPS_REG_RA
+  pc        : UC_MIPS_REG_PC
+  sp        : UC_MIPS_REG_SP
+  ret_val   : UC_MIPS_REG_V0
+
+  
+  func_args : 
+    - UC_MIPS_REG_A0
+    - UC_MIPS_REG_A1
+    - UC_MIPS_REG_A2
+    - UC_MIPS_REG_A3
+  
+
