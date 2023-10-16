@@ -33,6 +33,8 @@ class SysInfo:
                 if i > 0 and i % 3 == 0:
                     print("\n\t\t", end='')
                 print(f"a{i}: 0x%08x\t" % self.mu.reg_read(self.Reg.func_args[i]), end='')
+            # TODO: remove this line later
+            print("\n\t\tv0: 0x%08x\t" % self.mu.reg_read(UC_MIPS_REG_V0), end='')
             print("\n\t\treturn value: 0x%08x\t" % self.mu.reg_read(self.Reg.ret_val))
 
     def __init__(self, config_file="config.yaml"):
@@ -75,7 +77,7 @@ class SysInfo:
             self.bss_high   = config.get("bss_high") or self.align(self.bss_low + bin_len//2)
             self.stack_low  = config.get("stack_low") or self.align(self.bss_high)
             self.stack_high = config.get("stack_high") or self.align(self.stack_low + 0x10000000)
-            self.stack_cur  = self.align(self.stack_high // self.stack_low + self.stack_low)
+            self.stack_cur  = self.align((self.stack_high - self.stack_low) // 2 + self.stack_low)
             self.start      = config.get("start_address") or None
             self.end        = config.get("end_address") or None
 
@@ -126,6 +128,7 @@ def initGlobalVariables():
     if not SI.config_globals:
         return
 
+# TODO: Doesn't work, currently has issue where my value doesn't get dereferenced when running, causing error
 # TODO: currently only supports a single pointer, and array of strings for example would break
 def initFunctionArguments():
     if not SI.config_func_args:
@@ -140,7 +143,9 @@ def initFunctionArguments():
             SI.mu.mem_write(SI.mu.reg_read(SI.Reg.sp), struct.pack('<i',curArg['value']))
             SI.mu.reg_write(SI.Reg.func_args[i], SI.mu.reg_read(SI.Reg.sp))
 
-            # TODO: decide if I need to decrement SI.Reg.sp by SI.bit / 8 after each write to it
+            # TODO: need to decrement SI.Reg.sp by SI.bit / 8 after each write to it
+            # Then restore value afterwards, so use a temp value to do so
+
      # TODO: if more args are pass than what goes into registers, automatically place on stack
 
 # callback for tracing basic blocks
@@ -150,8 +155,9 @@ def hook_block(uc, address, size, user_data):
 
 # callback for tracing instructions
 def hook_code(uc, address, size, user_data):
-    print("\t>>> Tracing instruction at 0x%x, instruction size = 0x%x" %(address, size))
     SI.printRegisters()
+    print("\t>>> Tracing instruction at 0x%x, instruction size = 0x%x" %(address, size))
+    print()
 
 
 def main():
