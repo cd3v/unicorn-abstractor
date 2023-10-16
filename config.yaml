@@ -1,6 +1,8 @@
----
+# System Info and memory mappings
+MainSettings:
+
   # path to the binary
-  bin_path      : "./test/mipsel/main"
+  bin_path      : "./demos/mipsel/demo"
 
   # options: ARM      M68K     MIPS     RISCV    SPARC    X86
   #          ARM64    MAX      PPC      S390X    TRICORE
@@ -16,18 +18,33 @@
   text_address  : 0x10000
 
   # address to being the emulation at
-  start_address : 0x000106f0
-  end_address   : 0x00010734
+  start_address : 0x00010720
+  end_address   : 0x00010770
 
-  # ------ OPTIONAL ARGUMENTS BELOW ---- COMMENT OUT EACH ONE TO USE DEFAULTS --------
+  # ------ OPTIONAL ARGUMENTS BELOW ---- 
 
   # memory address must be page aligned -> 0x1000 
   # Numerical low value of the bss segment
-  # bss_low       : 0x0
-  # bss_high      : 0x0
+  bss_low       : ~
+  bss_high      : ~
 
-  # stack_low     : 0x0
-  # stack_high    : 0x0
+  stack_low     : ~
+  stack_high    : ~ 
+
+# document 2 - Function Arguments
+FunctionArgs    :  
+  - 
+    # OPTIONS: pointer, literal
+    type        : pointer
+    size        : 4
+    value       : 8
+  - 
+    # OPTIONS: pointer, literal
+    type        : literal
+    size        : ~
+    value       : 3
 
 
+# document 3 - Global variables assignments
+GlobalVariables: ~
 
